@@ -69,8 +69,11 @@ public UserRepository(){
     public List<User> findAll(){
     return users;
 }
-    public void Save(User user){
+    public User save(User user){
         users.add(user);
+        return user;
     }
-
+    public void delete(User user){
+        users.remove(user);
+    }
 }
