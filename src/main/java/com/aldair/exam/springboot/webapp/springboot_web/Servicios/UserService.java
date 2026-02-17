@@ -88,7 +88,7 @@ return RespuestaMapeadaUser(user);
 
     }
  */
-    public List<User> getUsers(String sortedBy,String filter){
+    public List<UserResponseDto> getUsers(String sortedBy,String filter){
 { 
 
     List<User> users = repository.findAll();
@@ -100,12 +100,16 @@ return RespuestaMapeadaUser(user);
     if(sortedBy != null && !sortedBy.isBlank()){
             users=FiltroOrdenadorOfFields(users,sortedBy);
         }
-        
-        return users;
+       
+        return users.stream().map(this::RespuestaMapeadaUser).toList();
 
         }
     }
-    public UpdateResponseDto UpdateUser(String id, UpdateUserDto request){
+    public UpdateResponseDto UpdateUser(UUID id, UpdateUserDto request){
+       
+       System.out.println("ID recibido en el servicio: " + id);
+              
+      
         User user = repository.findAll().stream().filter(u->u.getId().equals(id)).findFirst().orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
         if(request.getName() != null){
@@ -124,10 +128,12 @@ return RespuestaMapeadaUser(user);
             "Update User",
             user.getTax_Id().toString(),
             response );
-
+ 
     
     }
-    public DeleteUserResponseDto DeleteUser(String id){
+   //Delete User
+    public DeleteUserResponseDto DeleteUser(UUID id){
+
          User user = repository.findAll().stream().filter(u->u.getId().equals(id)).findFirst().orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
         boolean eliminado = repository.findAll().removeIf(u->u.getId().equals(id));

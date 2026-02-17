@@ -40,7 +40,7 @@ public class UserServiceTest {
      void shouldReturnEmptyListWhenNoUsersExist(){
                     when(userRepository.findAll()).thenReturn(List.of());
        
-            List<User> result = userService.getUsers(null,null);       
+            List<UserResponseDto> result = userService.getUsers(null,null);       
             assertTrue(result.isEmpty());
 
             verify(userRepository,times(1)).findAll();
@@ -114,7 +114,7 @@ public class UserServiceTest {
 
   
     UpdateResponseDto response =
-            userService.UpdateUser(userId.toString(), request);
+            userService.UpdateUser(userId, request);
 
     
     assertNotNull(response);
@@ -133,7 +133,7 @@ public class UserServiceTest {
     UpdateUserDto request = new UpdateUserDto();
     request.setName("Nuevo Name");
 
-    String randomId = UUID.randomUUID().toString();
+    UUID randomId = UUID.randomUUID();
 
     RuntimeException exception = assertThrows(
             RuntimeException.class,
@@ -166,7 +166,7 @@ public class UserServiceTest {
     doNothing().when(userRepository).delete(existingUser);
    
     DeleteUserResponseDto response =
-            userService.DeleteUser(userId.toString());
+            userService.DeleteUser(userId);
 
    
     assertNotNull(response);
@@ -181,7 +181,7 @@ public class UserServiceTest {
              when(userRepository.findAll())
                         .thenReturn(List.of()); 
 
-             String randomId = UUID.randomUUID().toString();
+             UUID randomId = UUID.randomUUID();
 
             RuntimeException exception = assertThrows(
                     RuntimeException.class,

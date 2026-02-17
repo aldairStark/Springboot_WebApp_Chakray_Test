@@ -2,7 +2,7 @@ package com.aldair.exam.springboot.webapp.springboot_web.controllers;
 
 
 import java.util.List;
-
+import java.util.UUID;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +46,7 @@ public class UserController {
    /*  public List<User> getUsers(@RequestParam(required = false)String sortedBy) {
         return service.getUsers(sortedBy);
     } */
-    public List<User> getUsers(@RequestParam(required = false)String sortedBy,@RequestParam(required = false)String filter) {
+    public List<UserResponseDto> getUsers(@RequestParam(required = false)String sortedBy,@RequestParam(required = false)String filter) {
         return service.getUsers(sortedBy,filter);
     }
     /* @GetMapping("/details") 
@@ -71,14 +71,31 @@ public class UserController {
     //=================================================
     @PatchMapping("/{id}")
     public UpdateResponseDto updateUser(@PathVariable String id, @RequestBody UpdateUserDto request){
-        return service.UpdateUser(id,request);
+
+        System.out.println("ID: " + id);
+        System.out.println("Request: " + request);
+        String convert = id.toString().replace("{", "").replace("}", "").replace(" ", "");
+        System.out.println("Convert: " + convert);
+        System.out.println("Longitud: " + convert.length());
+UUID uuid = UUID.fromString(convert);
+System.out.println("UUID: " + uuid);
+
+        return service.UpdateUser(uuid,request);
     }
      //=================================================
      //DELETE
       //=================================================
     @DeleteMapping("/{id}")
     public DeleteUserResponseDto deleteUsers(@PathVariable String id){
-            return service.DeleteUser(id);
+
+        System.out.println("ID: " + id);
+       
+        String convert = id.toString().replace("{", "").replace("}", "").replace(" ", "");
+        System.out.println("Convert: " + convert);
+        System.out.println("Longitud: " + convert.length());
+UUID uuid = UUID.fromString(convert);
+System.out.println("UUID: " + uuid);
+            return service.DeleteUser(uuid);
 
     }
   /*    @GetMapping("/details") 
